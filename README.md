@@ -1,6 +1,7 @@
 # API DOCUMENTATION
 ## SUMMARY
-This backend application should enable blog management for posts and comments, including creating, retrieving, updating, and deleting. Creating, retrieving, updating, and deleting is supported for blog posts. As for comments, retrieving and creating is supported.
+-Tech Stack: Node.js, Express, PostgresSQL, pgAdmin4
+-This backend application should enable blog management for posts and comments, including creating, retrieving, updating, and deleting. Creating, retrieving, updating, and deleting is supported for blog posts. As for comments, retrieving and creating is supported.
 
 ### Posts
 
