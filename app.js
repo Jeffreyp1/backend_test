@@ -117,9 +117,13 @@ app.get('/posts/:postId/comments', async(req, res)=>{
 app.post('/posts/:postId/comments', async (req, res)=>{
     try{
         const {postId}  = req.params
+        const {content, author} = req.body
+        if(!content || !author){
+            return res.status(400).send('Title, content, and author are all required')
+        }
         const result = await pool.query(
-            'SELECT * FROM comments WHERE postId = $1',
-            [postId]
+            `INSERT INTO comments (postId, content, author) VALUES ($1, $2, $3) RETURNING *`,
+            [postId, content, author]
         )
         const createdPost = result.rows[0];
         res.status(200).json(createdPost);
