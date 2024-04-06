@@ -37,6 +37,10 @@ This backend application should enable blog management for posts and comments, i
       );
 -Insert sample data:
 
+       INSERT INTO posts (title, content, author) VALUES ('My first post by Alice!', 'this is my first post! ', 'Alice'),
+       ('I have the second post !', 'John is the second post!', 'John'),
+       ('Last Post', 'My name is jeffrey!', 'Jeffrey');
+
       INSERT INTO comments (postId, content, author) VALUES 
       (1, 'Great post Alice!', 'John'),
       (1, 'Very Nice Alice!', 'Jeffrey');
