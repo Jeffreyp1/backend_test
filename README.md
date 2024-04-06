@@ -21,13 +21,13 @@ This backend application should enable blog management for posts and comments, i
 - Download and start PostgreSQL and ensure it's running
 - Download and start pgAdmin4. Connect to PostgreSQL server and create new database named "blog"
 - Create tables below:
-       CREATE TABLE posts (
+       
+      CREATE TABLE posts (
           id SERIAL PRIMARY KEY,
           title VARCHAR(255) NOT NULL,
           content TEXT NOT NULL,
           author VARCHAR(255) NOT NULL
       );
-      
       CREATE TABLE comments (
           id SERIAL PRIMARY KEY,
           postId INTEGER NOT NULL,
