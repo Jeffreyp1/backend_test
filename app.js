@@ -30,6 +30,7 @@ app.get('/posts/:id', async (req, res) =>{
             console.log(`Title: ${row.title}`);
             console.log(`Content: ${row.content}`);
             console.log(`Author: ${row.author}\n\n`);
+            console.log(`Comments: ${row.comments}\n\n`);
         })
         res.json(rows)
     }catch(err){
@@ -41,13 +42,13 @@ app.get('/posts/:id', async (req, res) =>{
 
 app.post('/posts', async (req, res) =>{
     try{
-        const {title, content, author} = req.body
+        const {title, content, author, comments} = req.body
         if(!title || !content || !author){
             return res.status(400).send('Title, content, and author are all required')
         }
         const result = await pool.query(
-            `INSERT INTO posts(title, content, author) VALUES ($1, $2, $3) RETURNING *`,
-            [title, content, author]
+            `INSERT INTO posts(title, content, author) VALUES ($1, $2, $3, $4) RETURNING *`,
+            [title, content, author, comments]
         )
         const createdPost = result.rows[0];
         res.status(200).json(createdPost);
@@ -60,13 +61,13 @@ app.post('/posts', async (req, res) =>{
 app.put('/posts/:id', async (req, res)=>{
     try{
         const {id} = req.params
-        const { title, content, author} = req.body
+        const { title, content, author, comments} = req.body
         if(!title || !content || !author || !id){
             return res.status(400).send('Title, content, ID,and author are all required')
         }
         const result = await pool.query(
-            'UPDATE posts SET title = $2, content = $3, author = $4 WHERE id = $1 RETURNING *',
-            [id, title, content, author]
+            'UPDATE posts SET title = $2, content = $3, author = $4 comments = $5 WHERE id = $1 RETURNING *',
+            [id, title, content, author, comments]
           );
         const createdPost = result.rows[0];
         res.status(200).json(createdPost);
@@ -94,12 +95,38 @@ app.delete('/posts/:id', async (req,res)=>{
     }
 })
 
-app.get('/posts/:id/comments', (req, res)=>{
-
+app.get('/posts/:postId/comments', async(req, res)=>{
+    try{
+        const {postId} = req.params
+        const result = await pool.query(
+            'SELECT * FROM comments WHERE postId = $1',
+            [postId]
+        );
+        if(result.rowCount === 0){
+            return res.status(404).send(`Post with id ${id} is not found`)
+        }
+        // res.status(200).json({message: "Successful delete!", deletedPost: result.rows[0]});
+        const createdPost = result.rows[0];
+        res.json(createdPost)
+    }catch(err){
+        console.log(err.message)
+        res.status(500).send('server error')
+    }
 })
 
-app.post('/posts/:id/comments', (req, res)=>{
-
+app.post('/posts/:postId/comments', async (req, res)=>{
+    try{
+        const {postId}  = req.params
+        const result = await pool.query(
+            'SELECT * FROM comments WHERE postId = $1',
+            [postId]
+        )
+        const createdPost = result.rows[0];
+        res.status(200).json(createdPost);
+    }catch(err){
+        console.log(err.message)
+        res.status(500).send('server error')
+    }
 })
 
 app.listen(port, () => {
