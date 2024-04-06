@@ -36,6 +36,7 @@ This backend application should enable blog management for posts and comments, i
           FOREIGN KEY (postId) REFERENCES posts(id) ON DELETE CASCADE
       );
 -Insert sample data:
+
       INSERT INTO comments (postId, content, author) VALUES 
       (1, 'Great post Alice!', 'John'),
       (1, 'Very Nice Alice!', 'Jeffrey');
@@ -51,6 +52,14 @@ This backend application should enable blog management for posts and comments, i
 - Clone this repository
 - install dependencies in terminal 'npm install'
 - set up db.js ( sample code is provided in the repository and may need to be modified). Replace user, host, database, password, and port as needed
+
+       const pool = new Pool({
+           user: 'test_user',
+           host: 'localhost',
+           database: 'blog',
+           password: 'test_password',
+           port: 5432
+       })
 
 ## Part 3
 - Run application by typing in terminal "node app.js"
